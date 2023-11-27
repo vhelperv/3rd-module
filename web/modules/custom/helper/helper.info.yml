@@ -1,0 +1,6 @@
+name: Helper
+description: Module with guest book functionality
+package: Custom Modules
+
+type: module
+core)version_requirment: ^8 || ^9
