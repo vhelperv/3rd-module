@@ -37,6 +37,23 @@ function helper_schema() {
         'not null' => TRUE,
         'description' => 'User phone number from the form.',
       ],
+      'review' => [
+        'type' => 'text',
+        'not null' => TRUE,
+        'description' => 'User review.',
+      ],
+      'avatar_id' => [
+        'type' => 'int',
+        'length' => 255,
+        'not null' => FALSE,
+        'description' => 'The avatar image file ID.',
+      ],
+      'review_image_id' => [
+        'type' => 'int',
+        'length' => 255,
+        'not null' => FALSE,
+        'description' => 'The review image file ID.',
+      ],
       'created' => [
         'type' => 'int',
         'not null' => TRUE,

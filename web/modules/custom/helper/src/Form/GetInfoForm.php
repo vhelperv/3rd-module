@@ -8,6 +8,7 @@ use Drupal\Core\Ajax\InvokeCommand;
 use Drupal\Core\Ajax\RemoveCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\file\Entity\File;
 use Drupal\helper\Entity\HelperEntity;
 
 
@@ -69,6 +70,38 @@ class GetInfoForm extends FormBase {
         'event' => 'input',
       ],
     ];
+    // Avatar managed file field
+    $form['avatar'] = [
+      '#type' => 'managed_file',
+      '#title' => $this->t('Avatar Upload(optional):'),
+      '#multiple' => FALSE,
+      '#description' => $this->t('Add your photo to the comment with the extension jpg, jpeg, or png. The maximum size is 2MB'),
+      '#upload_location' => 'public://guest_book/avatar',
+      '#upload_validators' => [
+        'file_validate_extensions' => ['jpg jpeg png'],
+        'file_validate_size' => [2 * 1024 * 1024],
+      ],
+    ];
+
+    $form['review'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Enter your comment:'),
+      '#required' => TRUE,
+      '#suffix' => '<div id="review-field-wrapper" class="error"></div>'
+    ];
+
+    // Image for review managed file field
+    $form['review_image'] = [
+      '#type' => 'managed_file',
+      '#title' => $this->t('Upload a photo to the comment(optional):'),
+      '#multiple' => FALSE,
+      '#description' => $this->t('Add your photo(avatar) with the extension jpg, jpeg, or png. The maximum size is 2MB'),
+      '#upload_location' => 'public://guest_book/review_image',
+      '#upload_validators' => [
+        'file_validate_extensions' => ['jpg jpeg png'],
+        'file_validate_size' => [5 * 1024 * 1024],
+      ],
+    ];
 
     // Form actions
     $form['actions']['#type'] = 'actions';
@@ -85,14 +118,14 @@ class GetInfoForm extends FormBase {
   }
 
   /**
-   * Ajax callback to validate the user name.
+   * Ajax callback to validate the username.
    */
   public function validateName(array &$form, FormStateInterface $form_state): AjaxResponse {
     $response = new AjaxResponse();
     $userName = $form_state->getValue('user_name');
     $errorMessageInvalid = '<span id="name-error-message" style="color: red; font-size: 15px;">The name must be between 2 and 100 characters long.</span>';
 
-    // Check if the user name length is within the valid range
+    // Check if the username length is within the valid range
     if (mb_strlen($userName, 'UTF-8') < 2 || mb_strlen($userName, 'UTF-8') > 100) {
       $response->addCommand(new RemoveCommand('#name-error-message'));
       $response->addCommand(new AppendCommand('#name-field-wrapper', $errorMessageInvalid));
@@ -184,6 +217,7 @@ class GetInfoForm extends FormBase {
     $userName = $values['user_name'];
     $userEmail = $values['user_email'];
     $userPhone = $values['user_phone'];
+    $userReview = $values['review'];
     $flag = TRUE;
 
     // Initialize AjaxResponse object for handling AJAX responses
@@ -231,15 +265,54 @@ class GetInfoForm extends FormBase {
       $flag = FALSE;
     }
 
-    // If all validations pass, insert data into the 'guest' table
+    // Validate user review
+    if (trim($userReview) == '') {
+      $flag = FALSE;
+      // Display error message for empty review text area
+      $errorMessageEmpty = '<span id="review-error-message" style="color: red; font-size: 15px;">Please enter your comment</span>';
+      $response->addCommand(new InvokeCommand('#edit-review', 'addClass', ['error']));
+      $response->addCommand(new RemoveCommand('#review-error-message'));
+      $response->addCommand(new AppendCommand('#review-field-wrapper', $errorMessageEmpty));
+    }
+
+    // If all validations pass, insert data into the 'helper' table
     if ($flag === TRUE) {
-      $uuid_service = \Drupal::service('uuid');
-      $uuid = $uuid_service->generate();
-      // Insert data into the 'guest_book' table
+      // Process avatar file
+      $avatar_file = $values['avatar'];
+      $avatar_id = null;
+
+      if (!empty($avatar_file[0])) {
+        $avatar = File::load($avatar_file[0]);
+
+        if ($avatar) {
+          $avatar_id = $avatar->id();
+          $avatar->setPermanent();
+          $avatar->save();
+        }
+      }
+
+      // Process review image file
+      $review_image_file = $values['review_image'];
+      $review_image_id = null;
+
+      if (!empty($review_image_file[0])) {
+        $review_image = File::load($review_image_file[0]);
+
+        if ($review_image) {
+          $review_image_id = $review_image->id();
+          $review_image->setPermanent();
+          $review_image->save();
+        }
+      }
+
+      // Insert data into the helper entity
       HelperEntity::create([
         'user_name' => $values['user_name'],
         'user_email' => $values['user_email'],
         'user_phone' => $values['user_phone'],
+        'review' => $values['review'],
+        'avatar_id' => $avatar_id,
+        'review_image_id' => $review_image_id
       ])->save();
 
       // Display success message
