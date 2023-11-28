@@ -1,1 +1,16 @@
 <?php
+
+/**
+ * Implements hook_theme().
+ */
+function helper_theme($existing, $type, $theme, $path)
+{
+  return [
+    //Get user info form
+    'get-info' => [
+      'variables' => [
+        'form' => []
+      ],
+    ],
+  ];
+}

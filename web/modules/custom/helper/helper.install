@@ -1,0 +1,59 @@
+<?php
+/**
+ * Implements hook_schema().
+ */
+// Creating a module table markup
+function helper_schema() {
+  $schema['helper'] = [
+    'description' => 'Table for storing data from the form',
+    'fields' => [
+      'id' => [
+        'description' => 'Holds the id',
+        'type' => 'serial',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ],
+      'uuid' => [
+        'description' => 'Universally unique identifier.',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+      ],
+      'user_name' => [
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+        'description' => 'User name from the form.',
+      ],
+      'user_email' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'description' => 'User email from the form.',
+      ],
+      'user_phone' => [
+        'type' => 'varchar',
+        'length' => 10,
+        'not null' => TRUE,
+        'description' => 'User phone number from the form.',
+      ],
+      'created' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'description' => 'Timestamp of when the record was created.',
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+
+  return $schema;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+
+// Deleting created tables when uninstalling the module
+function helper_uninstall() {
+  \Drupal::state()->delete('helper');
+}

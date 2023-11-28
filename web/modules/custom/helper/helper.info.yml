@@ -1,6 +1,5 @@
 name: Helper
-description: Module with guest book functionality
-package: Custom Modules
-
 type: module
-core)version_requirment: ^8 || ^9
+description: 'Provides a helper entity.'
+package: Custom Module
+core_version_requirement: ^8 || ^9

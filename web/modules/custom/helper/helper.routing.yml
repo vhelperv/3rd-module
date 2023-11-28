@@ -1,0 +1,7 @@
+helper.get_info_form:
+  path: 'helper/reviews/add'
+  defaults:
+    _title: 'Add review'
+    _controller: 'Drupal\helper\Controller\HelperController::getInfoForm'
+  requirements:
+    _permission: 'access content'
