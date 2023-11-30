@@ -10,7 +10,7 @@ helper.show_list:
   path: 'helper/reviews'
   defaults:
     _title: 'Reviews'
-    _controller: 'Drupal\helper\Controller\HelperController::showReviewList'
+    _controller: 'Drupal\helper\Controller\HelperController::showEntityList'
   requirements:
     _permission: 'access content'
 
@@ -18,7 +18,7 @@ helper.edit_review:
   path: '/helper/{id}/edit'
   defaults:
     _title: 'Edit Review'
-    _controller: 'Drupal\helper\Controller\HelperController::editReview'
+    _controller: 'Drupal\helper\Controller\HelperController::editEntity'
   requirements:
     _permission: 'administer site configuration'
 

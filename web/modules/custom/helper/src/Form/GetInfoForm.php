@@ -76,7 +76,7 @@ class GetInfoForm extends FormBase {
       '#title' => $this->t('Avatar Upload(optional):'),
       '#multiple' => FALSE,
       '#description' => $this->t('Add your photo to the comment with the extension jpg, jpeg, or png. The maximum size is 2MB'),
-      '#upload_location' => 'public://guest_book/avatar',
+      '#upload_location' => 'public://helper/avatar',
       '#upload_validators' => [
         'file_validate_extensions' => ['jpg jpeg png'],
         'file_validate_size' => [2 * 1024 * 1024],
@@ -96,7 +96,7 @@ class GetInfoForm extends FormBase {
       '#title' => $this->t('Upload a photo to the comment(optional):'),
       '#multiple' => FALSE,
       '#description' => $this->t('Add your photo(avatar) with the extension jpg, jpeg, or png. The maximum size is 2MB'),
-      '#upload_location' => 'public://guest_book/review_image',
+      '#upload_location' => 'public://helper/review_image',
       '#upload_validators' => [
         'file_validate_extensions' => ['jpg jpeg png'],
         'file_validate_size' => [5 * 1024 * 1024],
