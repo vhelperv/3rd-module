@@ -4,7 +4,7 @@
  */
 // Creating a module table markup
 function helper_schema() {
-  $schema['helper'] = [
+  $schema['helper_data'] = [
     'description' => 'Table for storing data from the form',
     'fields' => [
       'id' => [
@@ -72,5 +72,5 @@ function helper_schema() {
 
 // Deleting created tables when uninstalling the module
 function helper_uninstall() {
-  \Drupal::state()->delete('helper');
+  \Drupal::state()->delete('helper_data');
 }

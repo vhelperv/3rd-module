@@ -6,15 +6,14 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\views_ui\Form\BasicSettingsForm;
 
 /**
- * Defines the MyModuleData entity.
+ * Defines the helper entity.
  *
  * @ContentEntityType(
  *   id = "helper",
  *   label = @Translation("Helper Data"),
- *   base_table = "helper",
+ *   base_table = "helper_data",
  *   entity_keys = {
  *     "id" = "id",
  *     "uuid" = "uuid",

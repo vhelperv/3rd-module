@@ -1,0 +1,59 @@
+{% block content %}
+  <!-- Start of the content block for reviews -->
+  <div id="reviews">
+    <!-- Container for individual reviews -->
+    <div class="container-reviews">
+      <!-- Loop through each review in the 'reviews' list -->
+      {% for entity in entity_data %}
+        <!-- Individual review item with a unique ID based on the review's ID -->
+        <div class="review-item" id="review-{{ entity.id }}">
+
+          <!-- Section for the author's information -->
+          <div class="review-author-info">
+            <!-- Avatar of the user -->
+            <div class="avatar">{{ entity.avatar }}</div>
+
+            <!-- User's name -->
+            <div class="user-name">{{ entity.user_name }}</div>
+
+            <!-- Review creation time -->
+            <div class="review-created-time">{{ entity.created }}</div>
+          </div>
+
+          <!-- Section for the review discussion -->
+          <div class="review-disc">
+            <!-- Image associated with the review -->
+            <div class="review-disc-image">{{ entity.review_image }}</div>
+
+            <!-- Text content of the review -->
+            <div class="review-disc-text">
+              <p>{{ entity.review }}</p>
+            </div>
+          </div>
+
+          <!-- Section for the author's contact information -->
+          <div class="review-authors-contacts">
+            <!-- User's email -->
+            <div class="authors-email">Email: {{ entity.user_email }}</div>
+
+            <!-- User's phone number -->
+            <div class="authors-phone">Tel: +{{ entity.user_phone }}</div>
+          </div>
+
+          <!-- Admin actions section (visible only if the user is an admin) -->
+          {% if is_admin %}
+            <div class="admin-actions">
+              <!-- Edit action button -->
+              <div class="edit">{{ entity.edit }}</div>
+
+              <!-- Delete action button -->
+              <div class="delete">{{ entity.delete }}</div>
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+    </div>
+  </div>
+  <!-- End of the content block for reviews -->
+{% endblock %}

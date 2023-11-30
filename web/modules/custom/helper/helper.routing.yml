@@ -5,3 +5,27 @@ helper.get_info_form:
     _controller: 'Drupal\helper\Controller\HelperController::getInfoForm'
   requirements:
     _permission: 'access content'
+
+helper.show_list:
+  path: 'helper/reviews'
+  defaults:
+    _title: 'Reviews'
+    _controller: 'Drupal\helper\Controller\HelperController::showReviewList'
+  requirements:
+    _permission: 'access content'
+
+helper.edit_review:
+  path: '/helper/{id}/edit'
+  defaults:
+    _title: 'Edit Review'
+    _controller: 'Drupal\helper\Controller\HelperController::editReview'
+  requirements:
+    _permission: 'administer site configuration'
+
+helper.form-submit-delete:
+  path: '/confirmation-delete/{id}'
+  defaults:
+    _title: 'Confirm the deletion'
+    _form: 'Drupal\helper\Form\ConfirmationDeleteForm'
+  requirements:
+    _permission: 'administer site configuration'

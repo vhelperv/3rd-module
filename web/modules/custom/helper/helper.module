@@ -9,8 +9,14 @@ function helper_theme($existing, $type, $theme, $path)
     //Get user info form
     'get-info' => [
       'variables' => [
-        'form' => []
+        'form' => [],
       ],
+    ],
+    'list-entity' => [
+      'variables' => [
+        'entity_data' => [],
+        'is_admin' => NULL
+      ]
     ],
   ];
 }
