@@ -59,6 +59,27 @@ class ShowEntityList {
    * Builds markup for the avatar image.
    */
   protected function buildAvatarImageMarkup($avatarImageId) {
+    // Check if avatarImageId is not provided or is NULL
+    if (!$avatarImageId) {
+      $module_path = drupal_get_path('module', 'helper');
+      // Use a default image URL when no avatar is provided
+      $default_avatar_url = base_path() . $module_path . '/misc/icons/default_avatar.png';
+
+      $avatar_markup = [
+        '#theme' => 'image',
+        '#uri' => $default_avatar_url,
+        '#alt' => t('User Avatar'),
+        '#attributes' => [
+          'class' => ['responsive-image'],
+          'id' => 'default-avatar',
+        ],
+        '#prefix' => '<div class="image-container" id="image-container-default-avatar">',
+        '#suffix' => '</div>',
+      ];
+
+      return render($avatar_markup);
+    }
+
     $avatar = File::load($avatarImageId);
 
     if ($avatar) {
