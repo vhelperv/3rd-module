@@ -7,15 +7,12 @@
       {% for item in items %}
         <!-- Individual review item with a unique ID based on the review's ID -->
         <div class="review-item" id="review-{{ item.id }}">
-
           <!-- Section for the author's information -->
           <div class="review-author-info">
             <!-- Avatar of the user -->
             <div class="avatar">{{ item.avatar }}</div>
-
             <!-- User's name -->
             <div class="user-name">{{ item.user_name }}</div>
-
             <!-- Review creation time -->
             <div class="review-created-time">{{ item.created }}</div>
           </div>
@@ -24,7 +21,6 @@
           <div class="review-disc">
             <!-- Image associated with the review -->
             <div class="review-disc-image">{{ item.review_image }}</div>
-
             <!-- Text content of the review -->
             <div class="review-disc-text">
               <p>{{ item.review }}</p>
@@ -45,7 +41,6 @@
             <div class="admin-actions">
               <!-- Edit action button -->
               <div class="edit">{{ item.edit }}</div>
-
               <!-- Delete action button -->
               <div class="delete">{{ item.delete }}</div>
             </div>
