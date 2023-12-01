@@ -14,9 +14,10 @@ function helper_theme($existing, $type, $theme, $path)
     ],
     'list-entity' => [
       'variables' => [
-        'entity_data' => [],
-        'is_admin' => NULL
+        'is_admin' => NULL,
+        'items' => []
       ]
     ],
   ];
+
 }

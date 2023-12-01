@@ -195,8 +195,6 @@ class EditEntity extends GetInfoForm {
       $redirect_command = new RedirectCommand($url->toString());
       $response->addCommand($redirect_command);
 
-      // Clear form errors and flush all caches
-      $form_state->clearErrors();
       drupal_flush_all_caches();
     }
 

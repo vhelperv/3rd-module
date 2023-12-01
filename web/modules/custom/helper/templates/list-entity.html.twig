@@ -4,50 +4,50 @@
     <!-- Container for individual reviews -->
     <div class="container-reviews">
       <!-- Loop through each review in the 'reviews' list -->
-      {% for entity in entity_data %}
+      {% for item in items %}
         <!-- Individual review item with a unique ID based on the review's ID -->
-        <div class="review-item" id="review-{{ entity.id }}">
+        <div class="review-item" id="review-{{ item.id }}">
 
           <!-- Section for the author's information -->
           <div class="review-author-info">
             <!-- Avatar of the user -->
-            <div class="avatar">{{ entity.avatar }}</div>
+            <div class="avatar">{{ item.avatar }}</div>
 
             <!-- User's name -->
-            <div class="user-name">{{ entity.user_name }}</div>
+            <div class="user-name">{{ item.user_name }}</div>
 
             <!-- Review creation time -->
-            <div class="review-created-time">{{ entity.created }}</div>
+            <div class="review-created-time">{{ item.created }}</div>
           </div>
 
           <!-- Section for the review discussion -->
           <div class="review-disc">
             <!-- Image associated with the review -->
-            <div class="review-disc-image">{{ entity.review_image }}</div>
+            <div class="review-disc-image">{{ item.review_image }}</div>
 
             <!-- Text content of the review -->
             <div class="review-disc-text">
-              <p>{{ entity.review }}</p>
+              <p>{{ item.review }}</p>
             </div>
           </div>
 
           <!-- Section for the author's contact information -->
           <div class="review-authors-contacts">
             <!-- User's email -->
-            <div class="authors-email">Email: {{ entity.user_email }}</div>
+            <div class="authors-email">Email: {{ item.user_email }}</div>
 
             <!-- User's phone number -->
-            <div class="authors-phone">Tel: +{{ entity.user_phone }}</div>
+            <div class="authors-phone">Tel: +{{ item.user_phone }}</div>
           </div>
 
           <!-- Admin actions section (visible only if the user is an admin) -->
           {% if is_admin %}
             <div class="admin-actions">
               <!-- Edit action button -->
-              <div class="edit">{{ entity.edit }}</div>
+              <div class="edit">{{ item.edit }}</div>
 
               <!-- Delete action button -->
-              <div class="delete">{{ entity.delete }}</div>
+              <div class="delete">{{ item.delete }}</div>
             </div>
           {% endif %}
         </div>

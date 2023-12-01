@@ -5,9 +5,11 @@ namespace Drupal\helper\Form;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\AppendCommand;
 use Drupal\Core\Ajax\InvokeCommand;
+use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Ajax\RemoveCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\helper\Entity\HelperEntity;
 
@@ -317,6 +319,12 @@ class GetInfoForm extends FormBase {
 
       // Display success message
       \Drupal::messenger()->addStatus('Comment added successfully.');
+      drupal_flush_all_caches();
+
+      // Redirect to the specified URL
+      $url = Url::fromRoute('helper.show_list');
+      $redirect_command = new RedirectCommand($url->toString());
+      $response->addCommand($redirect_command);
 
     }
 

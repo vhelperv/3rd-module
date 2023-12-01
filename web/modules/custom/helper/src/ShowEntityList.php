@@ -5,7 +5,6 @@ namespace Drupal\helper;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\file\Entity\File;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 /**
  * Class for building the list of reviews.
  */
@@ -19,18 +18,15 @@ class ShowEntityList {
     // Check if the current user has the administrator role
     $is_admin = in_array('administrator', $current_user->getRoles());
 
-    // Load the Entity Type Manager.
-    $entity_type_manager = \Drupal::entityTypeManager();
-
     // Load all entities of type 'helper'.
-    $entities = $entity_type_manager->getStorage('helper')->loadMultiple();
+    $query = \Drupal::entityQuery('helper')
+      ->sort('created', 'DESC');
 
-
+    $ids = $query->execute();
+    $entities = \Drupal::entityTypeManager()->getStorage('helper')->loadMultiple($ids);
     $entity_data = [];
     // Loop through entities and access field values.
     foreach ($entities as $entity) {
-      // Check if the current user has the necessary permission
-      $isAdmin = \Drupal::currentUser()->hasPermission('administer site configuration');
       $entity_data[] = [
         'user_name' => $entity->get('user_name')->value,
         'user_email' => $entity->get('user_email')->value,
@@ -45,14 +41,7 @@ class ShowEntityList {
       ];
     }
 
-    // Build the render array for the reviews
-    $infoEntity = [
-      '#theme' => 'list-entity',
-      '#entity_data' => $entity_data,
-      '#is_admin' => $is_admin
-    ];
-
-    return $infoEntity;
+    return $entity_data;
   }
 
   /**
