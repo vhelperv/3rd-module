@@ -7,11 +7,51 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Url;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Messenger\MessengerInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * Form controller for the review deletion confirmation form.
  */
 class ConfirmationDeleteForm extends FormBase {
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * The messenger service.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
+   * Constructs a new ConfirmationDeleteForm object.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger service.
+   */
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, MessengerInterface $messenger) {
+    $this->entityTypeManager = $entityTypeManager;
+    $this->messenger = $messenger;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface|\Symfony\Component\DependencyInjection\ContainerInterface $container) {
+    return new static(
+      $container->get('entity_type.manager'),
+      $container->get('messenger')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -32,8 +72,8 @@ class ConfirmationDeleteForm extends FormBase {
     // Get the review ID from the URL
     $id = $this->getEntityIdFromUrl($current_url);
 
-    $entity = \Drupal::entityTypeManager()->getStorage('helper')->load($id);
-    $name =  $entity->get('user_name')->value;
+    $entity = $this->entityTypeManager->getStorage('helper')->load($id);
+    $name = $entity ? $entity->get('user_name')->value : '';
 
     // Display a message asking for confirmation
     $form['title'] = [
@@ -50,7 +90,7 @@ class ConfirmationDeleteForm extends FormBase {
       '#type' => 'button',
       '#value' => $this->t('Cancel'),
       '#ajax' => [
-        'callback' => '::functionCancel',
+        'callback' => '::cancelFunction',
         'event' => 'click',
       ],
     ];
@@ -69,20 +109,21 @@ class ConfirmationDeleteForm extends FormBase {
     $id = $this->getEntityIdFromUrl($current_url);
 
     // Database query to delete the review
-    $entity = \Drupal::entityTypeManager()->getStorage('helper')->load($id);
+    $entity = $this->entityTypeManager->getStorage('helper')->load($id);
+
     // Check if the entity exists before deleting.
     if ($entity) {
       $entity->delete();
     }
+
     // Redirect to the specified URL
     $url = Url::fromRoute('helper.show_list');
     $form_state->setRedirectUrl($url);
 
-    // Flush all caches
     drupal_flush_all_caches();
 
     // Display success message
-    \Drupal::messenger()->addError('Comment deleted successfully.');
+    $this->messenger->addWarning('Comment deleted successfully.');
   }
 
   /**
@@ -107,7 +148,7 @@ class ConfirmationDeleteForm extends FormBase {
   /**
    * Cancel function to close the confirmation dialog.
    */
-  public function functionCancel(array &$form, FormStateInterface $form_state) : AjaxResponse {
+  public function cancelFunction(array &$form, FormStateInterface $form_state) : AjaxResponse {
     // Create a new Ajax response
     $response = new AjaxResponse();
 

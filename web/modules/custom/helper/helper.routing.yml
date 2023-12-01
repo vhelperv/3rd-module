@@ -1,3 +1,4 @@
+# Route for displaying the form to add a new review.
 helper.get_info_form:
   path: 'helper/reviews/add'
   defaults:
@@ -6,6 +7,7 @@ helper.get_info_form:
   requirements:
     _permission: 'access content'
 
+# Route for displaying the list of reviews.
 helper.show_list:
   path: 'helper/reviews'
   defaults:
@@ -14,6 +16,7 @@ helper.show_list:
   requirements:
     _permission: 'access content'
 
+# Route for editing a review identified by {id}.
 helper.edit_review:
   path: '/helper/{id}/edit'
   defaults:
@@ -22,6 +25,7 @@ helper.edit_review:
   requirements:
     _permission: 'administer site configuration'
 
+# Route for displaying the deletion confirmation form for a review identified by {id}.
 helper.form-submit-delete:
   path: '/confirmation-delete/{id}'
   defaults:

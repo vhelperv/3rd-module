@@ -20,14 +20,14 @@ use Drupal\helper\Entity\HelperEntity;
 class GetInfoForm extends FormBase {
 
   /**
-   * {@inheritdoc}
+   * Implements hook_form_FORM_ID_alter() for the 'get_info' form.
    */
   public function getFormId() {
     return 'get_info';
   }
 
   /**
-   * {@inheritdoc}
+   * Implements buildForm() method to build the 'get_info' form.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Username field
@@ -72,6 +72,7 @@ class GetInfoForm extends FormBase {
         'event' => 'input',
       ],
     ];
+
     // Avatar managed file field
     $form['avatar'] = [
       '#type' => 'managed_file',
@@ -89,7 +90,7 @@ class GetInfoForm extends FormBase {
       '#type' => 'textarea',
       '#title' => $this->t('Enter your comment:'),
       '#required' => TRUE,
-      '#suffix' => '<div id="review-field-wrapper" class="error"></div>'
+      '#suffix' => '<div id="review-field-wrapper" class="error"></div>',
     ];
 
     // Image for review managed file field
@@ -132,7 +133,8 @@ class GetInfoForm extends FormBase {
       $response->addCommand(new RemoveCommand('#name-error-message'));
       $response->addCommand(new AppendCommand('#name-field-wrapper', $errorMessageInvalid));
       $response->addCommand(new InvokeCommand('#edit-user-name', 'addClass', ['error']));
-    } else {
+    }
+    else {
       $response->addCommand(new RemoveCommand('#name-error-message'));
       $response->addCommand(new InvokeCommand('#edit-user-name', 'removeClass', ['error']));
     }
@@ -155,11 +157,14 @@ class GetInfoForm extends FormBase {
     // Validate the email address format using a regular expression
     if (!preg_match('/^[a-zA-Z\-_@.]+$/', $userEmail)) {
       $this->addEmailErrorCommands($response, $errorMessageInvalid);
-    } elseif (!str_contains($userEmail, '@')) {
+    }
+    elseif (!str_contains($userEmail, '@')) {
       $this->addEmailErrorCommands($response, $errorMessageMustContain);
-    } elseif (substr($userEmail, -1) === '@') {
+    }
+    elseif (substr($userEmail, -1) === '@') {
       $this->addEmailErrorCommands($response, $errorMessageMissingDomain);
-    } else {
+    }
+    else {
       $this->removeEmailErrorCommands($response);
     }
 
@@ -186,8 +191,7 @@ class GetInfoForm extends FormBase {
   /**
    * Ajax callback to validate the user phone.
    */
-  public function validatePhone(array &$form, FormStateInterface $form_state): AjaxResponse
-  {
+  public function validatePhone(array &$form, FormStateInterface $form_state): AjaxResponse {
     $response = new AjaxResponse();
     $userPhone = $form_state->getValue('user_phone');
     $errorMessageInvalidFormat = '<span id="phone-error-message" style="color: red; font-size: 15px;">You can use only whole numbers</span>';
@@ -198,11 +202,13 @@ class GetInfoForm extends FormBase {
       $response->addCommand(new RemoveCommand('#phone-error-message'));
       $response->addCommand(new AppendCommand('#phone-field-wrapper', $errorMessageInvalidFormat));
       $response->addCommand(new InvokeCommand('#edit-user-phone', 'addClass', ['error']));
-    } elseif(mb_strlen($userPhone) < 10) {
+    }
+    elseif (mb_strlen($userPhone) < 10) {
       $response->addCommand(new RemoveCommand('#phone-error-message'));
       $response->addCommand(new AppendCommand('#phone-field-wrapper', $errorMessageShortNumber));
       $response->addCommand(new InvokeCommand('#edit-user-phone', 'addClass', ['error']));
-    } else {
+    }
+    else {
       $response->addCommand(new RemoveCommand('#phone-error-message'));
       $response->addCommand(new InvokeCommand('#edit-user-phone', 'removeClass', ['error']));
     }
@@ -233,7 +239,8 @@ class GetInfoForm extends FormBase {
       $response->addCommand(new InvokeCommand('#edit-user-name', 'addClass', ['error']));
       $response->addCommand(new RemoveCommand('#name-error-message'));
       $response->addCommand(new AppendCommand('#name-field-wrapper', $errorMessageEmpty));
-    } elseif (mb_strlen($userName, 'UTF-8') < 2 || mb_strlen($userName, 'UTF-8') > 100) {
+    }
+    elseif (mb_strlen($userName, 'UTF-8') < 2 || mb_strlen($userName, 'UTF-8') > 100) {
       $flag = FALSE;
     }
 
@@ -245,11 +252,14 @@ class GetInfoForm extends FormBase {
       $response->addCommand(new InvokeCommand('#edit-user-email', 'addClass', ['error']));
       $response->addCommand(new RemoveCommand('#email-error-message'));
       $response->addCommand(new AppendCommand('#email-field-wrapper', $errorMessageEmpty));
-    } elseif (!preg_match('/^[a-zA-Z\-_@.]+$/', $userEmail)) {
+    }
+    elseif (!preg_match('/^[a-zA-Z\-_@.]+$/', $userEmail)) {
       $flag = FALSE;
-    } elseif (!str_contains($userEmail, '@')) {
+    }
+    elseif (!str_contains($userEmail, '@')) {
       $flag = FALSE;
-    } elseif (substr($userEmail, -1) === '@') {
+    }
+    elseif (substr($userEmail, -1) === '@') {
       $flag = FALSE;
     }
 
@@ -261,9 +271,11 @@ class GetInfoForm extends FormBase {
       $response->addCommand(new InvokeCommand('#edit-user-phone', 'addClass', ['error']));
       $response->addCommand(new RemoveCommand('#phone-error-message'));
       $response->addCommand(new AppendCommand('#phone-field-wrapper', $errorMessageEmpty));
-    } elseif (preg_match('/[^0-9]/', $userPhone)) {
+    }
+    elseif (preg_match('/[^0-9]/', $userPhone)) {
       $flag = FALSE;
-    } elseif(mb_strlen($userPhone) < 10) {
+    }
+    elseif (mb_strlen($userPhone) < 10) {
       $flag = FALSE;
     }
 
@@ -281,7 +293,7 @@ class GetInfoForm extends FormBase {
     if ($flag === TRUE) {
       // Process avatar file
       $avatar_file = $values['avatar'];
-      $avatar_id = null;
+      $avatar_id = NULL;
 
       if (!empty($avatar_file[0])) {
         $avatar = File::load($avatar_file[0]);
@@ -295,7 +307,7 @@ class GetInfoForm extends FormBase {
 
       // Process review image file
       $review_image_file = $values['review_image'];
-      $review_image_id = null;
+      $review_image_id = NULL;
 
       if (!empty($review_image_file[0])) {
         $review_image = File::load($review_image_file[0]);
@@ -319,13 +331,12 @@ class GetInfoForm extends FormBase {
 
       // Display success message
       \Drupal::messenger()->addStatus('Comment added successfully.');
-      drupal_flush_all_caches();
 
       // Redirect to the specified URL
       $url = Url::fromRoute('helper.show_list');
       $redirect_command = new RedirectCommand($url->toString());
       $response->addCommand($redirect_command);
-
+      drupal_flush_all_caches();
     }
 
     return $response;

@@ -36,7 +36,10 @@ class HelperController extends ControllerBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Displays a paginated list of entities.
+   *
+   * @return array
+   *   Render array containing the entity list and pager.
    */
   public function showEntityList() {
     // Get the current user information
@@ -87,6 +90,12 @@ class HelperController extends ControllerBase {
     return $infoEntity;
   }
 
+  /**
+   * Displays the information form for retrieving data.
+   *
+   * @return array
+   *   A render array containing the information form.
+   */
   public function getInfoForm() {
     $form = \Drupal::formBuilder()->getForm(GetInfoForm::class);
     return [
@@ -94,6 +103,13 @@ class HelperController extends ControllerBase {
       '#form' => $form
     ];
   }
+
+  /**
+   * Displays the form for editing entities.
+   *
+   * @return array
+   *   A render array containing the entity edit form.
+   */
   public function editEntity() {
     $form = \Drupal::formBuilder()->getForm(EditEntity::class);
     return [

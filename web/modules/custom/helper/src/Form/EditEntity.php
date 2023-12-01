@@ -13,7 +13,10 @@ use Drupal\file\Entity\File;
 use Drupal\helper\Entity\HelperEntity;
 
 /**
- * Form controller for editing a review.
+ * Form controller for editing a review entity.
+ *
+ * Extends the GetInfoForm class and provides functionality to build and submit
+ * the review edit form with AJAX validation and submission handling.
  */
 class EditEntity extends GetInfoForm {
 
