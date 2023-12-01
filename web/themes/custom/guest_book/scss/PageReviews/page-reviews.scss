@@ -1,0 +1,150 @@
+/* Styles for the block with the page title */
+#block-guest-book-page-title {
+  width: 80%;
+  margin: 20px auto;
+
+  /* Styles for the page title element within the block */
+  .page-title {
+    font-size: 35px;
+  }
+}
+
+/* Styles for the reviews section */
+#reviews {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 80%;
+
+  /* Styles for the container of individual reviews */
+  .container-reviews {
+
+    /* Styles for each individual review item */
+    .review-item {
+      display: flex;
+      flex-direction: column;
+      background-color: #2a2a2d;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: #58626e 5px 5px 8px 1px;
+
+      /* Styles for the author information section within a review */
+      .review-author-info {
+        display: flex;
+        flex-direction: row;
+
+        /* Styles for the avatar section */
+        .avatar {
+          margin: 20px 20px 20px 30px;
+
+          /* Styles for the image container of the avatar */
+          .image-container {
+            width: 75px;
+            height: 75px;
+
+            /* Styles for the responsive image within the avatar */
+            .responsive-image {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              border-radius: 50%;
+            }
+          }
+        }
+
+        /* Styles for the user name section */
+        .user-name {
+          display: flex;
+          align-items: center;
+          font-size: 30px;
+          margin-right: auto;
+        }
+
+        /* Styles for the review creation time */
+        .review-created-time {
+          font-size: 25px;
+          font-style: italic;
+          display: flex;
+          align-items: center;
+          margin-right: 40px;
+        }
+      }
+
+      /* Styles for the review discussion section */
+      .review-disc {
+        display: flex;
+        flex-direction: row;
+
+        /* Styles for the image within the review discussion */
+        .review-disc-image {
+          width: auto;
+
+          /* Styles for the image container within the discussion image */
+          .image-container {
+            width: 500px;
+            margin-left: 30px;
+
+            /* Styles for the responsive image within the discussion image */
+            .responsive-image {
+              width: 100%;
+              height: auto;
+              border-radius: 15px;
+            }
+          }
+        }
+
+        /* Styles for the text within the review discussion */
+        .review-disc-text {
+          & > p {
+            text-align: left;
+            font-size: 16px;
+            margin: 0 30px;
+          }
+        }
+      }
+
+      /* Styles for the author's contact information */
+      .review-authors-contacts {
+        display: flex;
+        flex-direction: row;
+        margin: 20px 30px 20px auto;
+
+        /* Styles for the author's email */
+        .authors-email {
+          font-size: 20px;
+        }
+
+        /* Styles for the author's phone number */
+        .authors-phone {
+          font-size: 20px;
+          margin-left: 50px;
+        }
+      }
+
+      /* Styles for the admin actions section */
+      .admin-actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        background-color: #2e2e33;
+        border-radius: 0 0 10px 10px;
+
+        /* Styles for the edit action */
+        .edit {
+          .edit-review {
+            margin: 7px;
+            padding: 7px 15px;
+          }
+        }
+
+        /* Styles for the delete action */
+        .delete {
+          .delete-review {
+            margin: 7px;
+            padding: 7px 15px;
+          }
+        }
+      }
+    }
+  }
+}

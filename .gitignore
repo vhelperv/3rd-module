@@ -7,7 +7,7 @@
 /web/profiles/contrib/
 /web/libraries/
 /.docksal/
-/web/themes/custom/helper/node_modules
+/web/themes/custom/guest_book/node_modules
 
 # Ignore local settings
 /web/sites/*/settings.local.php
