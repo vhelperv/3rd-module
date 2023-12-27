@@ -5,17 +5,19 @@ namespace Drupal\helper;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\file\Entity\File;
+
 /**
  * Class for building the list of reviews.
  */
 class ShowEntityList {
+
   /**
    * Builds the list of reviews.
    */
   public function buildEntity() {
-    // Get the current user information
+    // Get the current user information.
     $current_user = \Drupal::currentUser();
-    // Check if the current user has the administrator role
+    // Check if the current user has the administrator role.
     $is_admin = in_array('administrator', $current_user->getRoles());
 
     // Load all entities of type 'helper'.
@@ -32,7 +34,7 @@ class ShowEntityList {
         'user_email' => $entity->get('user_email')->value,
         'user_phone' => $entity->get('user_phone')->value,
         'review' => $entity->get('review')->value,
-        'avatar' =>  $this->buildAvatarImageMarkup($entity->get('avatar_id')->value),
+        'avatar' => $this->buildAvatarImageMarkup($entity->get('avatar_id')->value),
         'review_image' => $this->buildReviewsImageMarkup($entity->get('review_image_id')->value),
         'created' => date('m/d/Y H:i:s', $entity->get('created')->value),
         'edit' => $is_admin ? $this->buildEditLink($entity->get('id')->value) : '',
@@ -48,10 +50,11 @@ class ShowEntityList {
    * Builds markup for the avatar image.
    */
   protected function buildAvatarImageMarkup($avatarImageId) {
-    // Check if avatarImageId is not provided or is NULL
+    $avatar_markup = [];
+    // Check if avatarImageId is not provided or is NULL.
     if (!$avatarImageId) {
       $module_path = drupal_get_path('module', 'helper');
-      // Use a default image URL when no avatar is provided
+      // Use a default image URL when no avatar is provided.
       $default_avatar_url = base_path() . $module_path . '/misc/icons/default_avatar.png';
 
       $avatar_markup = [
@@ -66,7 +69,7 @@ class ShowEntityList {
         '#suffix' => '</div>',
       ];
 
-      return render($avatar_markup);
+      return $avatar_markup;
     }
 
     $avatar = File::load($avatarImageId);
@@ -86,13 +89,14 @@ class ShowEntityList {
         '#suffix' => '</div>',
       ];
     }
-    return render($avatar_markup);
+    return $avatar_markup;
   }
 
   /**
    * Builds markup for the review image.
    */
   protected function buildReviewsImageMarkup($reviewImageId) {
+    $review_image_markup = [];
     if ($reviewImageId) {
       $reviewImage = File::load($reviewImageId);
 
@@ -112,7 +116,7 @@ class ShowEntityList {
         ];
       }
     }
-    return render($review_image_markup);
+    return $review_image_markup;
   }
 
   /**
@@ -124,18 +128,20 @@ class ShowEntityList {
     $edit_link['#attributes']['class'][] = 'edit-review';
     $edit_link['#attributes']['class'][] = 'button';
     $edit_link['#attributes']['id'] = 'edit-review-' . $idReview;
-    return render($edit_link);
+    return $edit_link;
   }
 
   /**
    * Builds a delete link for a review.
    */
   protected function buildDeleteLink($idReview) {
-    // Attach library for modal window
+    // Attach library for modal window.
     $delete_link['#attached']['library'][] = 'core/drupal.dialog.ajax';
+    $url = Url::fromRoute('helper.form-submit-delete', ['id' => $idReview])->toString();
     $delete_link = [
-      '#markup' => '<a href="/confirmation-delete/' . $idReview . '" class="use-ajax delete-review button" data-dialog-type="modal">Delete</a>',
+      '#markup' => '<a href="' . $url . '" class="use-ajax delete-review button" data-dialog-type="modal">Delete</a>',
     ];
-    return render($delete_link);
+    return $delete_link;
   }
+
 }

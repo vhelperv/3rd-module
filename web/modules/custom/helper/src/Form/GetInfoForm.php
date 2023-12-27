@@ -13,7 +13,6 @@ use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\helper\Entity\HelperEntity;
 
-
 /**
  * Form class for collecting user information for the guest book.
  */
@@ -30,7 +29,7 @@ class GetInfoForm extends FormBase {
    * Implements buildForm() method to build the 'get_info' form.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    // Username field
+    // Username field.
     $form['user_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter your name:'),
@@ -43,7 +42,7 @@ class GetInfoForm extends FormBase {
       ],
     ];
 
-    // User email field
+    // User email field.
     $form['user_email'] = [
       '#type' => 'email',
       '#title' => $this->t('Enter your email:'),
@@ -56,7 +55,7 @@ class GetInfoForm extends FormBase {
       ],
     ];
 
-    // User phone field
+    // User phone field.
     $form['user_phone'] = [
       '#type' => 'tel',
       '#title' => $this->t('Enter your phone number:'),
@@ -73,7 +72,7 @@ class GetInfoForm extends FormBase {
       ],
     ];
 
-    // Avatar managed file field
+    // Avatar managed file field.
     $form['avatar'] = [
       '#type' => 'managed_file',
       '#title' => $this->t('Avatar Upload(optional):'),
@@ -93,7 +92,7 @@ class GetInfoForm extends FormBase {
       '#suffix' => '<div id="review-field-wrapper" class="error"></div>',
     ];
 
-    // Image for review managed file field
+    // Image for review managed file field.
     $form['review_image'] = [
       '#type' => 'managed_file',
       '#title' => $this->t('Upload a photo to the comment(optional):'),
@@ -106,7 +105,7 @@ class GetInfoForm extends FormBase {
       ],
     ];
 
-    // Form actions
+    // Form actions.
     $form['actions']['#type'] = 'actions';
     $form['submit'] = [
       '#type' => 'submit',
@@ -128,7 +127,7 @@ class GetInfoForm extends FormBase {
     $userName = $form_state->getValue('user_name');
     $errorMessageInvalid = '<span id="name-error-message" style="color: red; font-size: 15px;">The name must be between 2 and 100 characters long.</span>';
 
-    // Check if the username length is within the valid range
+    // Check if the username length is within the valid range.
     if (mb_strlen($userName, 'UTF-8') < 2 || mb_strlen($userName, 'UTF-8') > 100) {
       $response->addCommand(new RemoveCommand('#name-error-message'));
       $response->addCommand(new AppendCommand('#name-field-wrapper', $errorMessageInvalid));
@@ -149,12 +148,12 @@ class GetInfoForm extends FormBase {
     $response = new AjaxResponse();
     $userEmail = $form_state->getValue('user_email');
 
-    // Error messages for different validation scenarios
+    // Error messages for different validation scenarios.
     $errorMessageInvalid = '<span id="email-error-message" style="color: red; font-size: 15px;">The email address is invalid.</span>';
     $errorMessageMustContain = '<span id="email-error-message" style="color: red; font-size: 15px;">Email must contain @.</span>';
     $errorMessageMissingDomain = '<span id="email-error-message" style="color: red; font-size: 15px;">A domain is required. For example: @gmail.com</span>';
 
-    // Validate the email address format using a regular expression
+    // Validate the email address format using a regular expression.
     if (!preg_match('/^[a-zA-Z\-_@.]+$/', $userEmail)) {
       $this->addEmailErrorCommands($response, $errorMessageInvalid);
     }
@@ -194,10 +193,10 @@ class GetInfoForm extends FormBase {
   public function validatePhone(array &$form, FormStateInterface $form_state): AjaxResponse {
     $response = new AjaxResponse();
     $userPhone = $form_state->getValue('user_phone');
-    $errorMessageInvalidFormat = '<span id="phone-error-message" style="color: red; font-size: 15px;">You can use only whole numbers</span>';
+    $errorMessageInvalidFormat = '<span id="phone-error-message" style="color: red; font-size: 15px;">You can use only whole</span>';
     $errorMessageShortNumber = '<span id="phone-error-message" style="color: red; font-size: 15px;">The number must have 10 digits</span>';
 
-    // Check if the phone number contains non-numeric characters
+    // Check if the phone number contains non-numeric characters.
     if (preg_match('/[^0-9]/', $userPhone)) {
       $response->addCommand(new RemoveCommand('#phone-error-message'));
       $response->addCommand(new AppendCommand('#phone-field-wrapper', $errorMessageInvalidFormat));
@@ -220,7 +219,7 @@ class GetInfoForm extends FormBase {
    * Ajax callback to handle form submission.
    */
   public function ajaxSubmit(array &$form, FormStateInterface $form_state): AjaxResponse {
-    // Process form submission
+    // Process form submission.
     $values = $form_state->getValues();
     $userName = $values['user_name'];
     $userEmail = $values['user_email'];
@@ -228,13 +227,13 @@ class GetInfoForm extends FormBase {
     $userReview = $values['review'];
     $flag = TRUE;
 
-    // Initialize AjaxResponse object for handling AJAX responses
+    // Initialize AjaxResponse object for handling AJAX responses.
     $response = new AjaxResponse();
 
-    // Validate user name
+    // Validate user name.
     if (trim($userName) == '') {
       $flag = FALSE;
-      // Display error message for empty user name
+      // Display error message for empty user name.
       $errorMessageEmpty = '<span id="name-error-message" style="color: red; font-size: 15px;">Please enter your name</span>';
       $response->addCommand(new InvokeCommand('#edit-user-name', 'addClass', ['error']));
       $response->addCommand(new RemoveCommand('#name-error-message'));
@@ -244,10 +243,10 @@ class GetInfoForm extends FormBase {
       $flag = FALSE;
     }
 
-    // Validate user email
+    // Validate user email.
     if (trim($userEmail) == '') {
       $flag = FALSE;
-      // Display error message for empty user email
+      // Display error message for empty user email.
       $errorMessageEmpty = '<span id="email-error-message" style="color: red; font-size: 15px;">Please enter your email</span>';
       $response->addCommand(new InvokeCommand('#edit-user-email', 'addClass', ['error']));
       $response->addCommand(new RemoveCommand('#email-error-message'));
@@ -263,10 +262,10 @@ class GetInfoForm extends FormBase {
       $flag = FALSE;
     }
 
-    // Validate user phone
+    // Validate user phone.
     if (trim($userPhone) == '') {
       $flag = FALSE;
-      // Display error message for empty user phone
+      // Display error message for empty user phone.
       $errorMessageEmpty = '<span id="phone-error-message" style="color: red; font-size: 15px;">Please enter your phone number</span>';
       $response->addCommand(new InvokeCommand('#edit-user-phone', 'addClass', ['error']));
       $response->addCommand(new RemoveCommand('#phone-error-message'));
@@ -279,19 +278,19 @@ class GetInfoForm extends FormBase {
       $flag = FALSE;
     }
 
-    // Validate user review
+    // Validate user review.
     if (trim($userReview) == '') {
       $flag = FALSE;
-      // Display error message for empty review text area
+      // Display error message for empty review text area.
       $errorMessageEmpty = '<span id="review-error-message" style="color: red; font-size: 15px;">Please enter your comment</span>';
       $response->addCommand(new InvokeCommand('#edit-review', 'addClass', ['error']));
       $response->addCommand(new RemoveCommand('#review-error-message'));
       $response->addCommand(new AppendCommand('#review-field-wrapper', $errorMessageEmpty));
     }
 
-    // If all validations pass, insert data into the 'helper' table
+    // If all validations pass, insert data into the 'helper' table.
     if ($flag === TRUE) {
-      // Process avatar file
+      // Process avatar file.
       $avatar_file = $values['avatar'];
       $avatar_id = NULL;
 
@@ -305,7 +304,7 @@ class GetInfoForm extends FormBase {
         }
       }
 
-      // Process review image file
+      // Process review image file.
       $review_image_file = $values['review_image'];
       $review_image_id = NULL;
 
@@ -319,20 +318,20 @@ class GetInfoForm extends FormBase {
         }
       }
 
-      // Insert data into the helper entity
+      // Insert data into the helper entity.
       HelperEntity::create([
         'user_name' => $values['user_name'],
         'user_email' => $values['user_email'],
         'user_phone' => $values['user_phone'],
         'review' => $values['review'],
         'avatar_id' => $avatar_id,
-        'review_image_id' => $review_image_id
+        'review_image_id' => $review_image_id,
       ])->save();
 
-      // Display success message
+      // Display success message.
       \Drupal::messenger()->addStatus('Comment added successfully.');
 
-      // Redirect to the specified URL
+      // Redirect to the specified URL.
       $url = Url::fromRoute('helper.show_list');
       $redirect_command = new RedirectCommand($url->toString());
       $response->addCommand($redirect_command);
@@ -346,7 +345,7 @@ class GetInfoForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // TODO: Implement submitForm() method.
+    // @todo Implement submitForm() method.
   }
 
 }

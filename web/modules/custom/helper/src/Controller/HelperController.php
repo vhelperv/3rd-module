@@ -4,21 +4,25 @@ namespace Drupal\helper\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Pager\PagerManagerInterface;
+use Drupal\helper\Form\EditEntity;
 use Drupal\helper\Form\GetInfoForm;
 use Drupal\helper\ShowEntityList;
-use Drupal\helper\Form\EditEntity;
 use Psr\Container\ContainerInterface;
 
+/**
+ * Controller for the Helper module.
+ */
 class HelperController extends ControllerBase {
+
   /**
-   * Drupal\Core\Pager\PagerManagerInterface definition.
+   * The pager manager.
    *
    * @var \Drupal\Core\Pager\PagerManagerInterface
    */
   protected $pagerManager;
 
   /**
-   * MyController constructor.
+   * HelperController constructor.
    *
    * @param \Drupal\Core\Pager\PagerManagerInterface $pagerManager
    *   The pager manager.
@@ -30,9 +34,9 @@ class HelperController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
-    $instance = $container->get('pager.manager');
-    return new static($instance);
+  public static function create(ContainerInterface|\Symfony\Component\DependencyInjection\ContainerInterface $container) {
+    $pagerManager = $container->get('pager.manager');
+    return new static($pagerManager);
   }
 
   /**
@@ -42,9 +46,9 @@ class HelperController extends ControllerBase {
    *   Render array containing the entity list and pager.
    */
   public function showEntityList() {
-    // Get the current user information
+    // Get the current user information.
     $current_user = \Drupal::currentUser();
-    // Check if the current user has the administrator role
+    // Check if the current user has the administrator role.
     $is_admin = in_array('administrator', $current_user->getRoles());
     $build = [];
 
@@ -66,14 +70,16 @@ class HelperController extends ControllerBase {
         '#theme' => 'list-entity',
         '#is_admin' => $is_admin,
         '#items' => [
-          '#item' => $item
-        ]
+          '#item' => $item,
+        ],
       ];
     }
 
     $build['pager'] = [
       '#type' => 'pager',
     ];
+
+    $build['#cache']['max-age'] = 0;
 
     return $build;
   }
@@ -100,7 +106,7 @@ class HelperController extends ControllerBase {
     $form = \Drupal::formBuilder()->getForm(GetInfoForm::class);
     return [
       '#theme' => 'get-info',
-      '#form' => $form
+      '#form' => $form,
     ];
   }
 
@@ -117,4 +123,5 @@ class HelperController extends ControllerBase {
       '#form' => $form,
     ];
   }
+
 }

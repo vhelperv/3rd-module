@@ -27,8 +27,11 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   },
  * )
  */
-
 class HelperEntity extends ContentEntityBase implements ContentEntityInterface {
+
+  /**
+   * Description helper entity.
+   */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields['id'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('ID'))
@@ -60,7 +63,7 @@ class HelperEntity extends ContentEntityBase implements ContentEntityInterface {
     $fields['avatar_id'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('Avatar ID'))
       ->setDescription(t('The avatar image file ID.'))
-      ->setRequired(FAlSE);
+      ->setRequired(FALSE);
     $fields['review_image_id'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('Review image ID'))
       ->setDescription(t('The review image file ID.'))
